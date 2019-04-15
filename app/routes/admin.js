@@ -5,10 +5,16 @@ module.exports = (app) =>{
     });
 
     //chegando dados do formulario
+    //no post é sempre bom fazer um redirect
     app.post("/noticias/salvar", (req,res) => {
-        var noticias = req.body;
+        var noticia = req.body;
+        
+        var connection = app.config.dbConnection();
+        var noticiasModel = new app.app.models.NoticiasDAO(connection);
 
-        res.send(noticias);        
+        noticiasModel.salvarNoticia(noticia, function(erro, resultado) {
+            res.redirect("/noticias");
+        });
     });
 
 
